@@ -8,8 +8,8 @@ python_brain/fire_ra_pb2_grpc.py
 *.pyo
 
 # C# / .NET
-Client/**/bin/
-Client/**/obj/
+**/bin/
+**/obj/
 *.user
 *.suo
 .vs/
