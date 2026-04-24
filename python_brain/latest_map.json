@@ -5,10 +5,16 @@
     "Owner": "Meow",
     "Position": {
       "IsEmpty": false,
-      "X": 15,
-      "Y": 40
+      "X": 0,
+      "Y": 1
     },
-    "SeenWaters": [],
+    "SeenWaters": [
+      {
+        "IsEmpty": true,
+        "X": 0,
+        "Y": 0
+      }
+    ],
     "SeenFires": [],
     "CurrentWaterLevel": 100,
     "CurrentHP": 1000
@@ -19,8 +25,8 @@
     "Owner": "Meow",
     "Position": {
       "IsEmpty": false,
-      "X": 18,
-      "Y": 40
+      "X": 189,
+      "Y": 1
     },
     "SeenWaters": [],
     "SeenFires": [],
@@ -33,8 +39,8 @@
     "Owner": "Meow",
     "Position": {
       "IsEmpty": false,
-      "X": 21,
-      "Y": 40
+      "X": -3,
+      "Y": 10
     },
     "SeenWaters": [],
     "SeenFires": [],
