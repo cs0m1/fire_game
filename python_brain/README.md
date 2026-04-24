@@ -1,5 +1,70 @@
 # Fire AI — Python Brain
 
+---
+
+## How gRPC works (for this game)
+
+Normal HTTP: you ask → server answers → done. One request, one response.
+
+gRPC bidirectional streaming is different:
+
+```
+YOU                          GAME SERVER
+ |                               |
+ |------- SayHello("Prometheus") -->|   (normal request/response, just a handshake)
+ |<---------- "Hello Prometheus" ---|
+ |                               |
+ |======= open ONE stream ========|   (stays open the whole game)
+ |                               |
+ |--- NOP (counter=1) ---------->|
+ |<-- ACK ------------------------|
+ |--- Right (unitId=31) -------->|
+ |<-- ACK ------------------------|   ACKs come back almost instantly
+ |--- NOP (counter=3) ---------->|
+ |<-- ACK ------------------------|
+ |                               |   ...some time passes (server game tick)...
+ |<-- UnitsFromServer ------------|   server pushes this whenever IT wants
+ |--- Left (unitId=31) --------->|
+ |<-- ACK ------------------------|
+ |<-- UnitsFromServer ------------|   another game tick
+```
+
+**Key points:**
+- You send commands whenever you want (in a Python generator)
+- The server sends `UnitsFromServer` on its own schedule (game ticks), not as a reply to your commands
+- Both sides are sending at the same time, independently
+- The stream stays open until you close it or the game ends
+- `ACK` = "I received your command and queued it" — NOT "I executed it"
+
+### How the Python code does it
+
+```python
+def my_commands():
+    counter = 0
+    while True:
+        counter += 1
+        yield CommandMessage(teamName="Prometheus", counter=counter,
+                             unitId=31, operation="Right")
+        time.sleep(0.25)   # control how fast you send
+
+# This loop receives messages FROM the server
+# while my_commands() sends messages TO the server, simultaneously
+for server_msg in stub.CommunicateWithStreams(my_commands()):
+    if server_msg.operation == "UnitsFromServer":
+        # this is where you learn where your units are
+        units = json.loads(server_msg.extraJson)
+```
+
+The generator (`my_commands`) runs in a background thread automatically.
+Your `for` loop on the outside receives whatever the server sends back.
+
+### Why counter matters
+
+The server uses `counter` to detect duplicate or out-of-order commands.
+Always increment it. Never reuse a number in the same session.
+
+---
+
 ## How to run
 
 ```bash
