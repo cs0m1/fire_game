@@ -1,0 +1,20 @@
+# Python
+python_brain/venv/
+python_brain/__pycache__/
+python_brain/brains/__pycache__/
+python_brain/fire_ra_pb2.py
+python_brain/fire_ra_pb2_grpc.py
+*.pyc
+*.pyo
+
+# C# / .NET
+Client/**/bin/
+Client/**/obj/
+*.user
+*.suo
+.vs/
+*.nupkg
+
+# OS
+.DS_Store
+Thumbs.db

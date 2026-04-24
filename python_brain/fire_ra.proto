@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option csharp_namespace = "FireRa.Service.Grpc";
+
+package raservice;
+
+service FireRaService {
+  rpc SayHello (HelloRequest) returns (HelloReply);
+  rpc CommunicateWithStreams (stream CommandMessage) returns (stream CommandMessage);
+}
+
+message HelloRequest {
+  string teamName = 1;
+}
+
+message HelloReply {
+  string message = 1;
+}
+
+message CommandMessage {
+  string teamName = 1;
+  int32 counter = 2;
+  uint32 unitId = 3;
+  string operation = 4;
+  string extraJson = 5;
+}
