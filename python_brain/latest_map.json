@@ -1,0 +1,44 @@
+[
+  {
+    "Id": 31,
+    "UnitType": "fireFighter",
+    "Owner": "Meow",
+    "Position": {
+      "IsEmpty": false,
+      "X": 15,
+      "Y": 40
+    },
+    "SeenWaters": [],
+    "SeenFires": [],
+    "CurrentWaterLevel": 100,
+    "CurrentHP": 1000
+  },
+  {
+    "Id": 32,
+    "UnitType": "Firetruck",
+    "Owner": "Meow",
+    "Position": {
+      "IsEmpty": false,
+      "X": 18,
+      "Y": 40
+    },
+    "SeenWaters": [],
+    "SeenFires": [],
+    "CurrentWaterLevel": 100,
+    "CurrentHP": 1500
+  },
+  {
+    "Id": 33,
+    "UnitType": "Firecopter",
+    "Owner": "Meow",
+    "Position": {
+      "IsEmpty": false,
+      "X": 21,
+      "Y": 40
+    },
+    "SeenWaters": [],
+    "SeenFires": [],
+    "CurrentWaterLevel": 5,
+    "CurrentHP": 2000
+  }
+]
