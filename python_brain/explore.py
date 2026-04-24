@@ -25,7 +25,7 @@ from web_viz     import WebViz
 from raw_logger  import RawLogger
 
 SERVER   = "10.4.4.59:5001"
-TEAM     = "Meow"
+TEAM     = "Prometheus"
 WEB_PORT = 5000
 
 # ── shared unit state (guarded by _lock) ─────────────────────────────────────

@@ -9,7 +9,7 @@ import fire_ra_pb2
 import fire_ra_pb2_grpc
 
 SERVER   = "10.4.4.59:5001"
-TEAM     = "Meow"          # <-- change to your team name
+TEAM     = "Prometheus"          # <-- change to your team name
 
 
 def generate_nops():

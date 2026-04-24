@@ -59,7 +59,7 @@ You get an `ACK` for every command you send.
   {
     "Id": 31,
     "UnitType": "fireFighter",
-    "Owner": "Meow",
+    "Owner": "Prometheus",
     "Position": { "IsEmpty": false, "X": 0, "Y": 1 },
     "SeenWaters": [ { "IsEmpty": true, "X": 0, "Y": 0 } ],
     "SeenFires":  [],
@@ -121,11 +121,11 @@ import grpc, fire_ra_pb2, fire_ra_pb2_grpc
 
 channel = grpc.insecure_channel("10.4.4.59:5001")
 stub    = fire_ra_pb2_grpc.FireRaServiceStub(channel)
-stub.SayHello(fire_ra_pb2.HelloRequest(teamName="Meow"))
+stub.SayHello(fire_ra_pb2.HelloRequest(teamName="Prometheus"))
 
 def commands():
     yield fire_ra_pb2.CommandMessage(
-        teamName="Meow", counter=1, unitId=31, operation="Right", extraJson=""
+        teamName="Prometheus", counter=1, unitId=31, operation="Right", extraJson=""
     )
 
 for response in stub.CommunicateWithStreams(commands()):
