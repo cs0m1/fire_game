@@ -16,6 +16,9 @@ import json
 import threading
 import time
 
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), 'proto'))
 import fire_ra_pb2
 import fire_ra_pb2_grpc
 
@@ -23,6 +26,20 @@ from map_tracker import MapTracker
 from explorer_ai import ExplorerAI
 from web_viz     import WebViz
 from raw_logger  import RawLogger
+
+import strategies.goto_0_0
+import strategies.explore_map
+import strategies.up
+import strategies.down
+import strategies.left
+import strategies.right
+
+# Map unit types to their specific AI scripts here!
+UNIT_STRATEGIES = {
+    "firecopter": strategies.goto_0_0,
+    "firetruck": strategies.explore_map,
+    "firefighter": strategies.explore_map,
+}
 
 SERVER   = "10.4.4.59:5001"
 TEAM     = "Prometheus"
@@ -142,8 +159,15 @@ def _console_status() -> None:
     print(f"╠{'═'*55}")
     for uid, u in units_snap.items():
         icon  = _ICON.get(u["type"].lower(), "❓")
-        tgt   = targets.get(uid)
-        role  = f"→ {tgt}" if tgt else "→ random walk"
+        utype = u["type"].lower()
+        strat = UNIT_STRATEGIES.get(utype, strategies.explore_map)
+        
+        if strat != strategies.explore_map:
+            role = f"→ strategy: {strat.__name__.split('.')[-1]}"
+        else:
+            tgt   = targets.get(uid)
+            role  = f"→ {tgt}" if tgt else "→ random walk"
+            
         stale = _ai._stale.get(uid, 0)
         sf    = f" [stale:{stale}]" if stale else ""
         print(f"║ {icon} {u['type']:12}#{uid:3}  "
@@ -174,7 +198,10 @@ def ai_loop():
         _console_status()
 
         for uid, u in units_snap.items():
-            direction = _ai.get_direction(uid, u)
+            utype = u["type"].lower()
+            strategy_module = UNIT_STRATEGIES.get(utype, strategies.explore_map)
+            direction = strategy_module.get_direction(u, _tracker, _ai)
+            
             _ai.record_command(uid, direction, u["x"], u["y"])
 
             counter += 1

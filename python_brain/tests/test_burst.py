@@ -10,6 +10,10 @@ Run:  python snoop_burst_test.py
 import grpc
 import json
 import time
+
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '../proto'))
 import fire_ra_pb2
 import fire_ra_pb2_grpc
 
